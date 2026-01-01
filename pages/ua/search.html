@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ua">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>{{ SITE NAME HERE }} - Головна</title>
+        <link rel="stylesheet" href="/styles.css">
+        <link rel="shortcut icon" href="{{ SITE FAVICON HERE }}">
+    </head>
+    <body>
+        <div class="page">
+        <header>
+            <h1><img src="{{ SITE LOGO HERE }}" height="60px" alt="{{ SITE NAME HERE }}"></h1>
+            <nav id="menu">
+                <a href="/" id="one">Головна</a><a href="/edit">Редагувати</a><a href="/about">Про сайт</a><a href="/exit" id="last">Вийти</a>
+            </nav>
+        </header>
+        <br>
+        <form class="right" action="/search" method="get" width="30" id="search">
+            <input name="q" type="text" placeholder="🔎 Пошук..." value="">
+            <button type="submit">Знайти</button>
+        </form>
+        <main>
+            <h2 class="center">Результати пошуку:</h2>
+            <div id="gallery-container">
+                {{ SEARCH RESULT HERE }}
+            </div>
+        </main>
+        <br>
+        <footer>
+            {{ SITE OWNER HERE }}. Усі права захищено.
+            <br>
+            Зроблено на базі <a href="https://github.com/2012Miron/Gallery">Галереї</a>.
+        </footer>
+        </div>
+        <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
+            <img src="" alt="" id="lightbox-img">
+            <div class="caption" id="lightbox-caption"></div>
+        </div>
+        <script src="/js/gallery.js" defer></script>
+    </body>
+</html>

@@ -1,0 +1,7 @@
+node_modules/*
+pictures/*
+pictures/
+db.sqlite
+eslint.config.js
+*.bat
+*.sh

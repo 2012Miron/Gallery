@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ua">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>{{ SITE NAME HERE }} - Редагувати</title>
+        <link rel="stylesheet" href="/styles.css">
+        <link rel="icon" href="{{ SITE FAVICON HERE }}">
+    </head>
+    <body>
+        <div class="page">
+        <header>
+            <h1><img src="{{ SITE LOGO HERE }}" height="60px" alt="{{ SITE NAME HERE }}"></h1>
+            <nav id="menu">
+                <a href="/" id="one">Головна</a><a href="/edit" class="now">Редагувати</a><a href="/about">Про сайт</a><a href="/exit" id="last">Вийти</a>
+            </nav>
+        </header>
+        <br>
+        <main class="center">
+            <h2>Редагувати</h2>
+            <h3>Оберіть опцію:</h4>
+            <div>
+                <p>
+                    <a class="button" href="/edit/pictures/add">Додати картину</a>
+                    <a class="button" href="/edit/pictures/change">Змінити картину</a>
+                    <a class="button" href="/edit/pictures/delete">Видалити картину</a>
+                </p>
+                <p>
+                    <a class="button" href="/edit/categories/add">Додати категорію</a>
+                    <a class="button" href="/edit/categories/change">Змінити категорію</a>
+                    <a class="button" href="/edit/categories/delete">Видалити категорію</a>
+                </p>
+            </div>
+        </main>
+        <br>
+        </div>
+        <style>
+            main {
+                padding-bottom: 3px;
+            }
+        </style>
+        <script src="/js/gallery.js" defer></script>
+    </body>
+</html>

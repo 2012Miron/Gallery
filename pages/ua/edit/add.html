@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ua">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>{{ SITE NAME HERE }} - Додати</title>
+        <link rel="stylesheet" href="/styles.css">
+        <link rel="icon" href="{{ SITE FAVICON HERE }}">
+    </head>
+    <body>
+        <div class="page">
+        <header>
+            <h1><img src="{{ SITE LOGO HERE }}" height="60px" alt="{{ SITE NAME HERE }}"></h1>
+            <nav id="menu">
+                <a href="/" id="one">Головна</a><a href="/edit" class="now">Редагувати</a><a href="/about">Про сайт</a><a href="/exit" id="last">Вийти</a>
+            </nav>
+        </header>
+        <br>
+        <main class="center">
+            <h2>Додати {{TYPE NAME HERE -e }}</h2>
+            <form action="/db/add/" method="post" enctype="multipart/form-data">
+                {{ FILE-PICTURE }}
+                <h4>Назва:</h4>
+                <input placeholder="Приклад: Морське побережжя" name="name" type="text">
+                {{ OTHER-PICTURE }}
+                <select name="category">
+                    {{ CATEGORIES MUST BE HERE? }}
+                </select>
+                <br>
+                <br>
+                <button type="submit">Завантажити</button>
+            </form>
+        </main>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,39 @@
+{
+    "info": {
+        "language": "ua",
+        "name": "Галерея",
+        "name-e": "Галереї",
+        "about": "<b>Галерея</b> — місце, де можна подивитися та завантажити картини художників Веселої Слободи.",
+        "owner": "Gallery Inc",
+        "logo": "/imgs/logo.png",
+        "favicon": "/imgs/favicon.ico",
+        "logoHNY": "/imgs/logo-hny.png",
+        "faviconHNY": "/imgs/favicon-hny.ico"
+    },
+    "rules": {
+        "display": "Для додання картин потрібно обов'язково <b>домовитися з авторами картин на публікацію</b>.",
+        "add": "all",
+        "change": "all",
+        "delete": "all",
+        "siteinfochange": "admin"
+    },
+    "languageOption": {
+        "ua": {
+            "loginButton": "<a href=\"/login\" id=\"last\">Увійти</a>",
+            "exitButton": "<a href=\"/exit\" id=\"last\">Вийти</a>",
+            "editButton": "'<a href=\"/edit\">Редагувати</a>'",
+            "notFoundMsg": "Нічого не знайдено :(",
+            "allCategories": "<option value=\"1\">Без категорії</option>",
+            "randomOrder": "<option value=\"random\">Випадково</option>",
+            "newOrder": "<option value=\"new\">За найновішими</option>",
+            "oldOrder": "<option value=\"old\">За найстарішими</option>",
+            "AZOrder": "<option value=\"alphabet\">Від А до Я</option>"
+        },
+        "ru": {
+
+        },
+        "en": {
+
+        }
+    }
+}
