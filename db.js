@@ -17,8 +17,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS categories (
 
 db.exec(`CREATE TABLE IF NOT EXISTS admins (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT, email TEXT UNIQUE,
-            password TEXT, admintype TEXT
+            name TEXT UNIQUE, password TEXT, admintype TEXT
         )`);
 
 if (db.prepare('SELECT COUNT(*) as count FROM categories').get().count === 0) {
@@ -28,8 +27,8 @@ if (db.prepare('SELECT COUNT(*) as count FROM categories').get().count === 0) {
     db.prepare('INSERT INTO categories (name) VALUES (?)').run('Техніка');
 }
 if (db.prepare('SELECT COUNT(*) as count FROM admins').get().count === 0) {
-    db.prepare('INSERT INTO admins (name, email, password, admintype) VALUES (?, ?, ?, ?)').run(
-        'root', '', '1234567890', 'super');
+    db.prepare('INSERT INTO admins (name, password, admintype) VALUES (?, ?, ?)').run(
+        'root', '1234567890', 'super');
 }
 
 function getOrderedPictures(order, filter) {
@@ -96,8 +95,8 @@ export function addData(data, dataType) {
         stmt = db.prepare('INSERT INTO categories (id, name) VALUES (?, ?)');
         stmt.run(`${lastId + 1}`, data);
     } else if (dataType == 'admins') {
-        db.prepare('INSERT INTO admins (id, name, email, password, admintype) VALUES (?, ?, ?, ?, ?)').run(
-            `${lastId + 1}`, data[0], data[1], data[2], data[3]
+        db.prepare('INSERT INTO admins (id, name, password, admintype) VALUES (?, ?, ?, ?)').run(
+            `${lastId + 1}`, data[0], data[1], data[2]
         );
     } else {
         console.log('ERROR: Wrong input in function "addData"!')
@@ -113,8 +112,8 @@ export function updateData(newData, dataType, updateType, id) {
     stmt.run(newData, id);
 }
 
-export function getData(id, table, resultType = 'object') {
-    let stmt = db.prepare(`SELECT * FROM ${table} WHERE id = ?`);
+export function getData(id, table, resultType = 'object', getBy = 'id') {
+    let stmt = db.prepare(`SELECT * FROM ${table} WHERE ${getBy} = ?`);
     if (resultType == 'object') {
         return stmt.get(id);
     } else if (resultType == 'picture' && table == 'pictures') {

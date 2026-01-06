@@ -1,10 +1,11 @@
 import express from 'express';
 import expressSession from 'express-session';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import multer from 'multer';
 import fs from 'fs';
 import __dirname from './__dirname.js';
-import { pages, resources, loginCheck, replaceSiteInfo } from './pages.js';
+import { pages, resources, editModeCheck, adminCheck, replaceSiteInfo } from './pages.js';
 import { addData, allData, getData, updateData, deleteData } from './db.js';
 
 
@@ -14,6 +15,7 @@ var lastAddedFile = '';
 export var parameters = JSON.parse(fs.readFileSync(__dirname + '/settings.json', 'utf-8'));
 export const language = parameters.info.language;
 
+app.use(cookieParser(secretSessionKey))
 app.use(expressSession({
     secret: secretSessionKey
 }));
@@ -69,7 +71,8 @@ app.get('/', (req, res) => {
     let page = fs.readFileSync(`pages/${language}/index.html`, 'utf-8');
     let filter = 'none';
     let order = 'random';
-    page = loginCheck(req, page);
+    page = editModeCheck(req, page);
+    page = adminCheck(req, page);
     page = replaceSiteInfo(parameters, page);
     page = allData(page, 'categories', 'option-list');
     if (req.query?.category != '1' && req.query.category) {
@@ -127,6 +130,14 @@ app.post('/db/:data/:action/', upload.single('newData'), (req, res) => {
             } else {
                 addData(req.body.name, 'categories');
             }
+        } else if (req.params.data == 'admins') {
+            if (!req.body.name || !req.body.password) {
+                console.log('ERROR: Not found req.body.name or req.body.password!');
+                res.sendFile(__dirname + `/pages/${language}/errors/404.html`);
+                return;
+            } else {
+                addData([req.body.name, req.body.password, req.body.admintype], 'admins')
+            }
         }
     } else if (req.params.action == 'change') {
         if (req.params.data == 'pictures') {
@@ -149,6 +160,10 @@ app.post('/db/:data/:action/', upload.single('newData'), (req, res) => {
                 res.sendFile(__dirname + `pages/${language}/errors/404.html`);
                 return;
             }
+        } else if (req.params.data == 'admins' && req.cookies.userdata.admintype != 'super') {
+            console.log('ERROR: Only superadmins can edit admins table!');
+            res.sendFile(__dirname + `pages/${language}/errors/404.html`);
+            return;
         }
         updateData(req.body.newData, req.params.data, req.body.option, req.body.id);
     } else if (req.params.action == 'delete') {
@@ -182,12 +197,31 @@ app.get('/exit/', (req, res) => {
     }
 });
 
-app.get('/login/admin/', (req, res) => {
-    res.redirect('/edit/');
+app.post('/login/admin/', upload.none(), (req, res) => {
+    if (getData(req.body.username, 'admins', 'object', 'name')?.password == req.body.password ||
+    getData(req.body.username, 'admins', 'object', 'name')?.password) {
+        res.cookie('userdata',
+            {'logined': true, 'id': getData(req.body.username, 'admins', 'object', 'name').id,
+                'admintype': getData(req.body.username, 'admins', 'object', 'name').admintype}, {
+            httpOnly: true,
+            maxAge: 1000 * 60 * 120,
+            secure: parameters.tech.secureconection
+        });
+        req.session.editMode = true;
+        res.redirect('/edit/');
+    } else {
+        res.redirect('/')
+    }
 });
 
 app.get('/exit/admin/', (req, res) => {
-    res.redirect('/edit/');
+    res.cookie('userdata',
+        {'logined': false, 'id': '-', 'admintype': '-'}, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 120,
+        secure: parameters.tech.secureconection
+    });
+    res.redirect('/');
 });
 
 app.get('/search/', (req, res) => {
@@ -203,7 +237,7 @@ app.get('/search/', (req, res) => {
             notFound++;
         }
     }
-    page = loginCheck(req, page);
+    page = editModeCheck(req, page);
     page = replaceSiteInfo(parameters, page);
     page = page.replace('value=""', `value="${req.query.q}"`);
     if (notFound == pictures.length) {
@@ -215,9 +249,15 @@ app.get('/search/', (req, res) => {
     res.send(page);
 });
 
-app.use( (req, res) => {
-    if (!req.session.editMode) {
+app.use((req, res) => {
+    if (!req.session.editMode || !req.cookies.userdata) {
         req.session.editMode = false;
+        res.cookie('userdata',
+            {'logined': false, 'id': '-', 'admintype': '-'}, {
+            httpOnly: true,
+            maxAge: 1000 * 60 * 120,
+            secure: parameters.tech.secureconection
+        });
     }
     if (req.path.endsWith('.png') || req.path.endsWith('.jpg') || req.path.endsWith('.jpeg') ||
         req.path.endsWith('.css') || req.path.endsWith('.js') || req.path.endsWith('.ico') ||
@@ -229,7 +269,7 @@ app.use( (req, res) => {
 });
 
 app.listen(3000, () => {
-    console.log('Gallery');
-    console.log('Успішно запущено!');
-    console.log('Перейти до сайту: http://127.0.0.1:3000/');
+    console.log('Gallery v1.0.0. [DEV]');
+    console.log('Runned successfully!');
+    console.log('Go to the site: http://127.0.0.1:3000/');
 });

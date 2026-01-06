@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>{{ SITE NAME HERE }} - Помилка 401</title>
+        <title>{{ SITE NAME HERE }} - Помилка 403</title>
         <link rel="stylesheet" href="/styles.css">
         <link rel="icon" href="{{ SITE FAVICON HERE }}">
     </head>
@@ -23,8 +23,9 @@
         <br>
         <main>
             <h2>Уупс!</h2>
-            <b>Код HTTP відповіді: 401</b>
-            <p>Ви спробували зайти в меню редагування, не увімкнувши режим редагування кнопкою "Увійти".</p>
+            <b>Код HTTP відповіді: 403</b>
+            <p>Ви спробували зайти на сторінку, права на перегляду якої ви не маєте.
+            Це встановлено за налаштуваннями {{ SITE OWNER HERE }}, за деталями зверніться до нього.</p>
         </main>
         <br>
         <footer>

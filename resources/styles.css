@@ -86,23 +86,32 @@ header img {
     display: block
 }
 
-nav#menu{display:flex;gap:6px;align-items:center}
-nav#menu a {
+nav#menu {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+nav#menu a, nav#menu button {
     display: inline-block;
     padding: 8px 12px;
     background: transparent;
     color: var(--accent);
     border-radius: 6px;
     font-weight: 600;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'JostLocal', system-ui, -apple-system, 'Segoe UI', Roboto, 'Trebuchet MS', sans-serif;
+    text-decoration: underline;
 }
-nav#menu a:hover {
+nav#menu a:hover, nav#menu button:hover {
     background-color: var(--hovered);
 }
 nav#menu a.now{background:var(--accent);color:#fff}
 
 /* Search form */
-form.right { margin: 0; }
-form.right button{padding:8px 10px;border-radius:6px;border:none;background:var(--accent);color:#fff}
+form.left { margin: 0; }
+form.left button{padding:8px 10px;border-radius:6px;border:none;background:var(--accent);color:#fff}
 
 main {
     margin-top: 18px;
@@ -110,13 +119,25 @@ main {
     border-radius: var(--radius);
     background-color: var(--main);
 }
+div.center.open {
+    background: var(--card);
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: 0 4px 5px var(--shadow);
+    width: 240px;
+    display: block;
+    margin: 0px auto;
+}
 
 h2, h3 { margin: 8px 0 }
 .center { text-align: center }
+.right { text-align: right; }
+.left { text-align: left; }
+.hide { display: none; }
+.open { display: block; }
 
 /* Controls */
 form select, form button{padding:8px;border-radius:6px;border:1px solid #ddd}
-form input[type="text"] {
+form input[type="text"], form input[type="password"] {
     padding: 8px 10px;
     border-radius: 6px;
     border: 1px solid #ddd;

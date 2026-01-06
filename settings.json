@@ -14,20 +14,47 @@
         "display": "Для додання картин потрібно обов'язково <b>домовитися з авторами картин на публікацію</b>.",
         "add": "all",
         "change": "all",
-        "delete": "all",
-        "siteinfochange": "admin"
+        "delete": "all"
     },
     "languageOption": {
         "ua": {
-            "loginButton": "<a href=\"/login\" id=\"last\">Увійти</a>",
-            "exitButton": "<a href=\"/exit\" id=\"last\">Вийти</a>",
-            "editButton": "'<a href=\"/edit\">Редагувати</a>'",
+            "editButton": "<a href=\"/edit\">Редагувати</a>",
             "notFoundMsg": "Нічого не знайдено :(",
             "allCategories": "<option value=\"1\">Без категорії</option>",
             "randomOrder": "<option value=\"random\">Випадково</option>",
             "newOrder": "<option value=\"new\">За найновішими</option>",
             "oldOrder": "<option value=\"old\">За найстарішими</option>",
-            "AZOrder": "<option value=\"alphabet\">Від А до Я</option>"
+            "AZOrder": "<option value=\"alphabet\">Від А до Я</option>",
+            "picture": "Картина",
+            "pictureE": "Картину",
+            "category": "Категорія",
+            "categoryE": "Категорію",
+            "admin": "Адміністратор",
+            "adminE": "Адміністратора",
+            "upload": "Завантажити",
+            "add": "Додати",
+            "filePicture": "<h4>Файл:</h4>\n<input type=\"file\" name=\"newData\">",
+            "otherPicture":
+"<h4>Ім'я автора/авторки:</h4><input placeholder=\"Наприклад: Семен Семенович\" name=\"author\" type=\"text\"><h4>Категорія:</h4>",
+            "optionPicture":
+"<h4>Опція:</h4><select name=\"option\" id=\"optionSelect\"><option value=\"name\">Назва</option><option value=\"author\">Ім'я автора/авторки</option><option value=\"file\">Файл</option></select>",
+            "otherAdmin":
+"<h4>Пароль:</h4><input placeholder=\"Бажано надійний!\" name=\"password\" type=\"password\"><h4>Тип аккаунту:</h4><select name=\"admintype\"><option value=\"admin\">Адміністратор</option><option value=\"super\">Суперадмін</option>",
+            "optionAdmin":
+"<h4>Опція:</h4><select name=\"option\" id=\"optionSelect\"><option value=\"password\">Пароль</option><option value=\"name\">Ім'я</option><option value=\"type\">Тип</option></select>",
+            "superAdminButtons":
+"<h3>Для суперадмінів:</h3><p><a class=\"button\" href=\"/edit/admins/add\">Додати адміністратора</a><a class=\"button\" href=\"/edit/admins/change\">Змінити адміністратора</a><a class=\"button\" href=\"/edit/admins/delete\">Видалити адміністратора</a></p>",
+            "exitEMButton": "<b><a href=\"/exit\">Вийти з режиму редагування</a></b>",
+            "enableEMButton": "<b><a href=\"/login\">Увійти в режим редагування</a></b>",
+            "exitButton": "<b><a href=\"/exit/admin\">Вийти з аккаунту адміністратора</a></b>",
+            "loginForm":
+"<b>Увійти як адміністратор:</b><form method=\"post\" action=\"/login/admin\"><input placeholder=\"Ім'я користувача\" type=\"text\" name=\"username\"><br><input placeholder=\"Пароль\" type=\"password\" name=\"password\"><br><button type=\"submit\">Увійти</button></form>",
+            "addPictureButton": "<a class=\"button\" href=\"/edit/pictures/add\">Додати картину</a>",
+            "addCategoryButton": "<a class=\"button\" href=\"/edit/categories/add\">Додати категорію</a>",
+            "changePictureButton": "<a class=\"button\" href=\"/edit/pictures/change\">Змінити картину</a>",
+            "changeCategoryButton": "<a class=\"button\" href=\"/edit/categories/change\">Змінити категорію</a>",
+            "deletePictureButton": "<a class=\"button\" href=\"/edit/pictures/delete\">Видалити картину</a>",
+            "deleteCategoryButton": "<a class=\"button\" href=\"/edit/categories/delete\">Видалити категорію</a>"
         },
         "ru": {
 
@@ -35,5 +62,8 @@
         "en": {
 
         }
+    },
+    "tech": {
+        "secureconection": false
     }
 }

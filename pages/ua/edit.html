@@ -13,9 +13,14 @@
         <header>
             <h1><img src="{{ SITE LOGO HERE }}" height="60px" alt="{{ SITE NAME HERE }}"></h1>
             <nav id="menu">
-                <a href="/" id="one">Головна</a><a href="/edit" class="now">Редагувати</a><a href="/about">Про сайт</a><a href="/exit" id="last">Вийти</a>
+                <a href="/" id="one">Головна</a><a href="/edit" class="now">Редагувати</a><a href="/about">Про сайт</a><button id="last">Аккаунт</button>
             </nav>
         </header>
+        <div class="center hide" id="loginmenu">
+            <b><a href="/exit">Вийти з режиму редагування</a></b>
+            <br>
+            <b><a href="/exit/admin">Вийти з аккаунту адміністратора</a></b>
+        </div>
         <br>
         <main class="center">
             <h2>Редагувати</h2>
@@ -31,6 +36,7 @@
                     <a class="button" href="/edit/categories/change">Змінити категорію</a>
                     <a class="button" href="/edit/categories/delete">Видалити категорію</a>
                 </p>
+                <h3>Для суперадмінів:</h3><p><a class="button" href="/edit/admins/add">Додати адміністратора</a><a class="button" href="/edit/admins/change">Змінити адміністратора</a><a class="button" href="/edit/admins/delete">Видалити адміністратора</a></p>
             </div>
         </main>
         <br>
@@ -40,6 +46,6 @@
                 padding-bottom: 3px;
             }
         </style>
-        <script src="/js/gallery.js" defer></script>
+        <script src="/js/login-menu.js"></script>
     </body>
 </html>
