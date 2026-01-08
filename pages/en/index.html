@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>{{ SITE NAME HERE }} - Home</title>
+        <link rel="stylesheet" href="/styles.css">
+        <link rel="shortcut icon" href="{{ SITE FAVICON HERE }}">
+    </head>
+    <body>
+        <div class="page">
+        <header>
+            <h1><img src="{{ SITE LOGO HERE }}" height="60px" alt="{{ SITE NAME HERE }}"></h1>
+            <nav id="menu">
+                <a href="/" class="now" id="one">Home</a><a href="/edit">Edit</a><a href="/about">About</a><button id="last">Account</button>
+            </nav>
+        </header>
+        <div class="center hide" id="loginmenu">
+            <b><a href="/exit">Disable edit mode</a></b>
+            <br>
+            <b><a href="/exit/admin">Exit from administrator account</a></b>
+        </div>
+        <br>
+        <form class="left" action="/search" method="get" width="30" id="search">
+            <input name="q" type="text" placeholder="🔎 Search...">
+            <button type="submit">Find</button>
+        </form>
+        <main>
+            <div class="animation">
+                <h2>Welcome to the {{ SITE NAME-E HERE }}!</h2>
+                <p>
+                    {{ SITE ABOUT HERE }}
+                    <a href="/about">Read about site</a>.
+                </p>
+            </div>
+            <br>
+            <form method="get">
+                <select name="category">
+                    {{ CATEGORIES MUST BE HERE }}
+                </select>
+                <select name="order">
+                    <option value="random">Random</option>
+                    <option value="new">By newest</option>
+                    <option value="old">By oldest</option>
+                    <option value="alphabet">A to Z</option>
+                </select>
+                <button type="submit">Sort</button>
+            </form>
+            <h3 class="center">Pictures:</h3>
+            <div id="gallery-container">
+                {{ PICTURES MUST BE HERE }}
+            </div>
+        </main>
+        <br>
+        <footer>
+            {{ SITE OWNER HERE }}. All rights reserved.
+            <br>
+            Made on the basis of <a href="https://github.com/2012Miron/Gallery">Gallery</a>.
+        </footer>
+        </div>
+        <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
+            <img src="" alt="" id="lightbox-img">
+            <div class="caption" id="lightbox-caption"></div>
+        </div>
+        <script src="/js/gallery.js" defer></script>
+        <script src="/js/login-menu.js"></script>
+    </body>
+</html>

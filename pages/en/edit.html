@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>{{ SITE NAME HERE }} - Edit</title>
+        <link rel="stylesheet" href="/styles.css">
+        <link rel="icon" href="{{ SITE FAVICON HERE }}">
+    </head>
+    <body>
+        <div class="page">
+        <header>
+            <h1><img src="{{ SITE LOGO HERE }}" height="60px" alt="{{ SITE NAME HERE }}"></h1>
+            <nav id="menu">
+                <a href="/" id="one">Home</a><a href="/edit" class="now">Edit</a><a href="/about">About</a><button id="last">Account</button>
+            </nav>
+        </header>
+        <div class="center hide" id="loginmenu">
+            <b><a href=\"/exit\">Disable edit mode</a></b>
+            <br>
+            <b><a href="/exit/admin">Exit from administrator account</a></b>
+        </div>
+        <br>
+        <main class="center">
+            <h2>Edit</h2>
+            <h3>Choose option:</h4>
+            <div>
+                <p>
+                    <a class="button" href="/edit/pictures/add">Add picture</a>
+                    <a class="button" href="/edit/pictures/change">Change picture</a>
+                    <a class="button" href="/edit/pictures/delete">Delete picture</a>
+                </p>
+                <p>
+                    <a class="button" href="/edit/categories/add">Add category</a>
+                    <a class="button" href="/edit/categories/change">Change category</a>
+                    <a class="button" href="/edit/categories/delete">Delete category</a>
+                </p>
+                <h3>For superadmins:</h3><p><a class="button" href="/edit/admins/add">Add administrator</a> <a class="button" href="/edit/admins/change">Change administrator</a> <a class="button" href="/edit/admins/delete">Delete administrator</a></p>
+            </div>
+        </main>
+        <br>
+        </div>
+        <style>
+            main {
+                padding-bottom: 3px;
+            }
+        </style>
+        <script src="/js/login-menu.js"></script>
+    </body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>{{ SITE NAME HERE }} - Главная</title>
+        <link rel="stylesheet" href="/styles.css">
+        <link rel="shortcut icon" href="{{ SITE FAVICON HERE }}">
+    </head>
+    <body>
+        <div class="page">
+        <header>
+            <h1><img src="{{ SITE LOGO HERE }}" height="60px" alt="{{ SITE NAME HERE }}"></h1>
+            <nav id="menu">
+                <a href="/" class="now" id="one">Главная</a><a href="/edit">Редактировать</a><a href="/about">Про сайт</a><button id="last">Аккаунт</button>
+            </nav>
+        </header>
+        <div class="center hide" id="loginmenu">
+            <b><a href="/exit">Выйти из режима редактирования</a></b>
+            <br>
+            <b><a href="/exit/admin">Выйти из аккаунта администратора</a></b>
+        </div>
+        <br>
+        <form class="left" action="/search" method="get" width="30" id="search">
+            <input name="q" type="text" placeholder="🔎 Поиск...">
+            <button type="submit">Найти</button>
+        </form>
+        <main>
+            <div class="animation">
+                <h2>Добро пожаловать в {{ SITE NAME-E HERE }}!</h2>
+                <p>
+                    {{ SITE ABOUT HERE }}
+                    <a href="/about">Читать про сайт</a>.
+                </p>
+            </div>
+            <br>
+            <form method="get">
+                <select name="category">
+                    {{ CATEGORIES MUST BE HERE }}
+                </select>
+                <select name="order">
+                    <option value="random">Случайно</option>
+                    <option value="new">По новейшим</option>
+                    <option value="old">По старейшим</option>
+                    <option value="alphabet">От А до Я</option>
+                </select>
+                <button type="submit">Сортировать</button>
+            </form>
+            <h3 class="center">Картины:</h3>
+            <div id="gallery-container">
+                {{ PICTURES MUST BE HERE }}
+            </div>
+        </main>
+        <br>
+        <footer>
+            {{ SITE OWNER HERE }}. Все права защищены.
+            <br>
+            Сделано на базе <a href="https://github.com/2012Miron/Gallery">Галереи</a>.
+        </footer>
+        </div>
+        <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
+            <img src="" alt="" id="lightbox-img">
+            <div class="caption" id="lightbox-caption"></div>
+        </div>
+        <script src="/js/gallery.js" defer></script>
+        <script src="/js/login-menu.js"></script>
+    </body>
+</html>
