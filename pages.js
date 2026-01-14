@@ -33,6 +33,8 @@ export function replaceSiteInfo(parameters, page) {
     for (let i = 0; i <= 7; i++) {
         if (parametersList[i] == 'rules') {
             donePage = donePage.replaceAll(`{{ SITE RULES HERE }}`, parameters.rules.display)
+        } else if (parametersList[i] == 'styles') {
+            donePage = donePage.replaceAll(`{{ SITE STYLES HERE }}`, parameters.tech.styles)
         } else {
             donePage = donePage.replaceAll(`{{ SITE ${parametersList[i].toUpperCase()} HERE }}`, parameters.info[parametersList[i]])
         }

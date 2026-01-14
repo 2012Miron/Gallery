@@ -1,17 +1,17 @@
 {
     "info": {
-        "language": "ua",
-        "name": "Галерея",
-        "name-e": "Галереї",
-        "about": "<b>Галерея</b> — місце, де можна подивитися та завантажити картини художників Веселої Слободи.",
-        "owner": "Gallery Inc",
-        "logo": "/imgs/logo.png",
-        "favicon": "/imgs/favicon.ico",
-        "logoHNY": "/imgs/logo-hny.png",
-        "faviconHNY": "/imgs/favicon-hny.ico"
+        "language": "en",
+        "name": "Gallery",
+        "name-e": "Gallery",
+        "about": "<b>Gallery</b> — free and open site for pictures/document viewing.",
+        "owner": "Your Inc",
+        "logo": "/imgs/logo-en.png",
+        "favicon": "/imgs/favicon-en.ico",
+        "logoHNY": "/imgs/logo-hny-en.png",
+        "faviconHNY": "/imgs/favicon-hny-en.ico"
     },
     "rules": {
-        "display": "Для додання картин потрібно обов'язково <b>домовитися з авторами картин на публікацію</b>.",
+        "display": "Replace <i>this text</i> on your rules for pictures uploading.",
         "add": "all",
         "change": "all",
         "delete": "all"
@@ -98,7 +98,7 @@
         "en": {
             "editButton": "<a href=\"/edit\">Edit</a>",
             "notFoundMsg": "Nothing found :(",
-            "allCategories": "<option value=\"1\">No category</option>",
+            "allCategories": "<option value=\"1\">Uncategorized</option>",
             "randomOrder": "<option value=\"random\">Random</option>",
             "newOrder": "<option value=\"new\">By newest</option>",
             "oldOrder": "<option value=\"old\">By oldest</option>",
@@ -136,8 +136,9 @@
         }
     },
     "tech": {
+        "port": 3000,
+        "dataPath": "/pictures",
         "secureconection": false,
-        "styles": "/styles.css",
-        "customjs": "/js/your_file.js"
+        "styles": "/styles.css"
     }
 }

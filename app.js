@@ -21,7 +21,7 @@ app.use(expressSession({
 }));
 app.use(bodyParser.urlencoded({extended: true}));
 
-const pictureDir = __dirname + '/pictures';
+const pictureDir = __dirname + parameters.tech.dataPath;
 if (!fs.existsSync(pictureDir)) {
     fs.mkdirSync(pictureDir, { recursive: true });
 }
@@ -231,7 +231,7 @@ app.get('/search/', (req, res) => {
     let notFound = 0;
     for (let i = 1; i <= pictures.length; i++) {
         let picture = pictures[i - 1];
-        if (picture.name.includes(req.query.q) || picture.author.includes(req.query.q)) {
+        if ((picture.name.includes(req.query.q) || picture.author.includes(req.query.q))) {
             gallery += getData(i, 'pictures', 'picture');
         } else {
             notFound++;
@@ -268,8 +268,8 @@ app.use((req, res) => {
     }
 });
 
-app.listen(3000, () => {
+app.listen(parameters.tech.port, () => {
     console.log('Gallery v1.0.0. [DEV]');
     console.log('Runned successfully!');
-    console.log('Go to the site: http://127.0.0.1:3000/');
+    console.log(`Go to the site: http://localhost:${parameters.tech.port}/`);
 });

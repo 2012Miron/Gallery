@@ -2,6 +2,7 @@
 import Database from 'better-sqlite3';
 import fs from 'fs';
 import __dirname from './__dirname.js';
+import { language } from './app.js';
 
 var db = new Database('db.sqlite');
 
@@ -21,10 +22,22 @@ db.exec(`CREATE TABLE IF NOT EXISTS admins (
         )`);
 
 if (db.prepare('SELECT COUNT(*) as count FROM categories').get().count === 0) {
-    db.prepare('INSERT INTO categories (name) VALUES (?)').run('Без категорії');
-    db.prepare('INSERT INTO categories (name) VALUES (?)').run('Природа');
-    db.prepare('INSERT INTO categories (name) VALUES (?)').run('Тварини');
-    db.prepare('INSERT INTO categories (name) VALUES (?)').run('Техніка');
+    if (language == "ua") {
+        db.prepare('INSERT INTO categories (name) VALUES (?)').run('Без категорії');
+        db.prepare('INSERT INTO categories (name) VALUES (?)').run('Природа');
+        db.prepare('INSERT INTO categories (name) VALUES (?)').run('Тварини');
+        db.prepare('INSERT INTO categories (name) VALUES (?)').run('Техніка');
+    } else if (language == "ru") {
+        db.prepare('INSERT INTO categories (name) VALUES (?)').run('Без категории');
+        db.prepare('INSERT INTO categories (name) VALUES (?)').run('Природа');
+        db.prepare('INSERT INTO categories (name) VALUES (?)').run('Животные');
+        db.prepare('INSERT INTO categories (name) VALUES (?)').run('Техника');
+    } else if (language == "en") {
+        db.prepare('INSERT INTO categories (name) VALUES (?)').run('Uncategorized');
+        db.prepare('INSERT INTO categories (name) VALUES (?)').run('Nature');
+        db.prepare('INSERT INTO categories (name) VALUES (?)').run('Animals');
+        db.prepare('INSERT INTO categories (name) VALUES (?)').run('Technique');
+    }
 }
 if (db.prepare('SELECT COUNT(*) as count FROM admins').get().count === 0) {
     db.prepare('INSERT INTO admins (name, password, admintype) VALUES (?, ?, ?)').run(
