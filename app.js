@@ -68,42 +68,54 @@ app.get([parameters.info.logo, parameters.info.favicon], (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    let page = fs.readFileSync(`pages/${language}/index.html`, 'utf-8');
+    let page;
     let filter = 'none';
     let order = 'random';
-    page = editModeCheck(req, page);
-    page = adminCheck(req, page);
-    page = replaceSiteInfo(parameters, page);
-    page = allData(page, 'categories', 'option-list');
+    if (!parameters.tech.onlyAPI) {
+        page = fs.readFileSync(`pages/${language}/index.html`, 'utf-8');
+        page = editModeCheck(req, page);
+        page = adminCheck(req, page);
+        page = replaceSiteInfo(parameters, page);
+        page = allData(page, 'categories', 'option-list');
+    }
     if (req.query?.category != '1' && req.query.category) {
         filter = getData(req.query.category, 'categories').name;
-        page = page.replace(`<option value="${req.query.category}">${filter}</option>`, '');
-        page = page.replace(parameters.languageOption[language].allCategories, 
-            `<option value="${req.query.category}">${filter}</option>
-            ${parameters.languageOption[language].allCategories}>`);
+        if (!parameters.tech.onlyAPI) {
+            page = page.replace(`<option value="${req.query.category}">${filter}</option>`, '');
+            page = page.replace(parameters.languageOption[language].allCategories, 
+                `<option value="${req.query.category}">${filter}</option>
+                ${parameters.languageOption[language].allCategories}>`);
+        }
     }
     if (req.query?.order != 'random' && req.query.order) {
         order = req.query.order;
-        switch (order) {
-            case 'new': page = page.replace(parameters.languageOption[language].newOrder, '');
-                    page = page.replace(parameters.languageOption[language].randomOrder,
-                        `${parameters.languageOption[language].newOrder}
-                            ${parameters.languageOption[language].randomOrder}`)
-                    break;
-            case 'old': page = page.replace(parameters.languageOption[language].oldOrder, '');
+        if (!parameters.tech.onlyAPI) {
+            switch (order) {
+                case 'new': page = page.replace(parameters.languageOption[language].newOrder, '');
                         page = page.replace(parameters.languageOption[language].randomOrder,
-                            `${parameters.languageOption[language].oldOrder}
-                            ${parameters.languageOption[language].randomOrder}`);
-                            break;
-            case 'alphabet': page = page.replace(parameters.languageOption[language].AZOrder, '');
-                        page = page.replace(parameters.languageOption[language].randomOrder,
-                            `${parameters.languageOption[language].AZOrder}
-                            ${parameters.languageOption[language].randomOrder}`);
-                            break;
+                            `${parameters.languageOption[language].newOrder}
+                                ${parameters.languageOption[language].randomOrder}`)
+                        break;
+                case 'old': page = page.replace(parameters.languageOption[language].oldOrder, '');
+                            page = page.replace(parameters.languageOption[language].randomOrder,
+                                `${parameters.languageOption[language].oldOrder}
+                                ${parameters.languageOption[language].randomOrder}`);
+                                break;
+                case 'alphabet': page = page.replace(parameters.languageOption[language].AZOrder, '');
+                            page = page.replace(parameters.languageOption[language].randomOrder,
+                                `${parameters.languageOption[language].AZOrder}
+                                ${parameters.languageOption[language].randomOrder}`);
+                                break;
+            }
         }
     }
-    page = allData(page, 'pictures', 'gallery', filter, order);
-    res.type('html');
+    if (parameters.tech.onlyAPI) {
+        page = {'result': allData('', 'pictures', 'list', filter, order)};
+        res.type('json');
+    } else {
+        page = allData(page, 'pictures', 'gallery', filter, order);
+        res.type('html');
+    }
     res.send(page);
 });
 
@@ -115,26 +127,41 @@ app.post('/db/:data/:action/', upload.single('newData'), (req, res) => {
     if (req.params.action == 'add') {
         if (req.params.data == 'pictures') {
             if (!req.file) {
-                console.log('ERROR: Not found req.file!');
-                res.sendFile(__dirname + `/pages/${language}/errors/404.html`);
-                return;
+                if (parameters.tech.onlyAPI) {
+                    res.type('json').send({'result': 'ERROR: Not found req.file!'});
+                    return;
+                } else {
+                    console.log('ERROR: Not found req.file!');
+                    res.status(400).sendFile(__dirname + `/pages/${language}/errors/404.html`);
+                    return;
+                }
             } else {
                 addData([req.body.name, req.body.author, 'pictures/' + lastAddedFile,
                     getData(req.body.category, 'categories').name], 'pictures');
             }
         } else if (req.params.data == 'categories') {
             if (!req.body.name) {
-                console.log('ERROR: Not found req.body.name!');
-                res.sendFile(__dirname + `/pages/${language}/errors/404.html`);
-                return;
+                if (parameters.tech.onlyAPI) {
+                    res.status(400).type('json').send({'result': 'ERROR: Not found req.body.name!'});
+                    return;
+                } else {
+                    console.log('ERROR: Not found req.body.name!');
+                    res.status(400).sendFile(__dirname + `/pages/${language}/errors/404.html`);
+                    return;
+                }
             } else {
                 addData(req.body.name, 'categories');
             }
         } else if (req.params.data == 'admins') {
             if (!req.body.name || !req.body.password) {
-                console.log('ERROR: Not found req.body.name or req.body.password!');
-                res.sendFile(__dirname + `/pages/${language}/errors/404.html`);
-                return;
+                if (parameters.tech.onlyAPI) {
+                    res.status(400).type('json').send({'result': 'ERROR: Not found req.body.name or req.body.password!'});
+                    return;
+                } else {
+                    console.log('ERROR: Not found req.body.name or req.body.password!');
+                    res.status(400).sendFile(__dirname + `/pages/${language}/errors/404.html`);
+                    return;
+                }
             } else {
                 addData([req.body.name, req.body.password, req.body.admintype], 'admins')
             }
@@ -142,13 +169,23 @@ app.post('/db/:data/:action/', upload.single('newData'), (req, res) => {
     } else if (req.params.action == 'change') {
         if (req.params.data == 'pictures') {
             if (!req.body.newData && req.body.option != 'file') {
-                console.log('ERROR: Not found req.body.newData!');
-                res.sendFile(__dirname + `/pages/${language}/errors/404.html`);
-                return;
+                if (parameters.tech.onlyAPI) {
+                    res.status(400).type('json').send({'result': 'ERROR: Not found req.body.newData!'});
+                    return;
+                } else {
+                    console.log('ERROR: Not found req.body.newData!');
+                    res.status(400).sendFile(__dirname + `/pages/${language}/errors/404.html`);
+                    return;
+                }
             } else if (!req.file && req.body.option == 'file') {
-                console.log('ERROR: Not found req.file!');
-                res.sendFile(__dirname + `/pages/${language}/errors/404.html`);
-                return;
+                if (parameters.tech.onlyAPI) {
+                    res.status(400).type('json').send({'result': 'ERROR: Not found req.file!'});
+                    return;
+                } else {
+                    console.log('ERROR: Not found req.file!');
+                    res.status(400).sendFile(__dirname + `/pages/${language}/errors/404.html`);
+                    return;
+                }
             } else if (req.file && req.body.option == 'file') {
                 updateData('pictures/' + lastAddedFile, 'pictures', 'path', req.body.id);
                 res.redirect('/');
@@ -156,20 +193,33 @@ app.post('/db/:data/:action/', upload.single('newData'), (req, res) => {
             }
         } else if (req.params.data == 'categories') {
             if (!req.body.newData) {
-                console.log('ERROR: Not found req.body.newData!');
+                if (parameters.tech.onlyAPI) {
+                    res.status(400).type('json').send({'result': 'ERROR: Not found req.body.newData!'});
+                    return;
+                } else {
+                    console.log('ERROR: Not found req.body.newData!');
+                    res.sendFile(__dirname + `pages/${language}/errors/404.html`);
+                    return;
+                }
+            }
+        } else if (req.params.data == 'admins' && req.cookies.userdata.admintype != 'super') {
+            if (parameters.tech.onlyAPI) {
+                res.status(400).type('json').send({'result': 'ERROR: Only superadmins can edit admins table!'});
+                return;
+            } else {
+                console.log('ERROR: Only superadmins can edit admins table!');
                 res.sendFile(__dirname + `pages/${language}/errors/404.html`);
                 return;
             }
-        } else if (req.params.data == 'admins' && req.cookies.userdata.admintype != 'super') {
-            console.log('ERROR: Only superadmins can edit admins table!');
-            res.sendFile(__dirname + `pages/${language}/errors/404.html`);
-            return;
         }
         updateData(req.body.newData, req.params.data, req.body.option, req.body.id);
     } else if (req.params.action == 'delete') {
         if (req.body.sure == 'true') {
             deleteData(req.body.id, req.params.data, true);
         }
+    }
+    if (parameters.tech.onlyAPI) {
+        res.type('json').send({'result': 'DB updated succesfully'});
     }
     res.redirect('/');
 });
@@ -208,9 +258,17 @@ app.post('/login/admin/', upload.none(), (req, res) => {
             secure: parameters.tech.secureconection
         });
         req.session.editMode = true;
-        res.redirect('/edit/');
+        if (parameters.tech.onlyAPI) {
+            res.type('json').send({'result': 'Logined succesfully!'});
+        } else {
+            res.redirect('/edit');
+        }
     } else {
-        res.redirect('/')
+        if (parameters.tech.onlyAPI) {
+            res.status(400).type('json').send({'result': 'ERROR: Wrong name or password!'});
+        } else {
+            res.redirect('/');
+        }
     }
 });
 
@@ -221,31 +279,50 @@ app.get('/exit/admin/', (req, res) => {
         maxAge: 1000 * 60 * 120,
         secure: parameters.tech.secureconection
     });
-    res.redirect('/');
+    if (parameters.tech.onlyAPI) {
+        res.type('json').send({'result': 'Logouted succesfully!'});
+    } else {
+        res.redirect('/');
+    }
 });
 
 app.get('/search/', (req, res) => {
     let pictures = allData('', 'pictures', 'list');
-    let gallery = ``;
-    let page = fs.readFileSync(`pages/${language}/search.html`, 'utf-8');
+    let gallery;
+    let page;
+    if (parameters.tech.onlyAPI) {
+        gallery = []
+    } else {
+        page = fs.readFileSync(`pages/${language}/search.html`, 'utf-8');
+        gallery = ``;
+    }
     let notFound = 0;
     for (let i = 1; i <= pictures.length; i++) {
         let picture = pictures[i - 1];
         if ((picture.name.includes(req.query.q) || picture.author.includes(req.query.q))) {
-            gallery += getData(i, 'pictures', 'picture');
+            if (parameters.tech.onlyAPI) {
+                gallery.push(getData(i, 'pictures', 'object'));
+            } else {
+                gallery += getData(i, 'pictures', 'picture');
+            }
         } else {
             notFound++;
         }
     }
-    page = editModeCheck(req, page);
-    page = replaceSiteInfo(parameters, page);
-    page = page.replace('value=""', `value="${req.query.q}"`);
-    if (notFound == pictures.length) {
-        page = page.replace('{{ SEARCH RESULT HERE }}', parameters.languageOption[language].notFoundMsg)
+    if (parameters.tech.onlyAPI) {
+        page = {'result': gallery}
+        res.type('json');
     } else {
-        page = page.replace('{{ SEARCH RESULT HERE }}', gallery);
+        page = editModeCheck(req, page);
+        page = replaceSiteInfo(parameters, page);
+        page = page.replace('value=""', `value="${req.query.q}"`);
+        if (notFound == pictures.length) {
+            page = page.replace('{{ SEARCH RESULT HERE }}', parameters.languageOption[language].notFoundMsg)
+        } else {
+            page = page.replace('{{ SEARCH RESULT HERE }}', gallery);
+        }
+        res.type('html');
     }
-    res.type('html');
     res.send(page);
 });
 

@@ -1,11 +1,11 @@
-// Данный файл отвечает за отображение страниц сайта (в том числе ресурсы)
+// This file is responsible for displaying website pages (including resources)
 
 import fs from 'fs';
 import __dirname from './__dirname.js';
 import { allData } from './db.js';
 import { language, parameters } from './app.js';
 
-// Проверяет, включил ли пользователь режим редактирования, и если нет - убирает пункт из меню
+// Checks whether the user has enabled editing mode, and if not, removes the item from the menu.
 export function editModeCheck(req, page) {
     if (req.session.editMode === undefined || !req.session.editMode) {
         return page.replace(parameters.languageOption[language].editButton, '').replace(
@@ -17,7 +17,7 @@ export function editModeCheck(req, page) {
     }
 }
 
-// Проверяет, вошел ли пользователь в аккаунта админа, и редактирует меню входа
+// Checks if the user is logged in to the admin account and edits the login menu.
 export function adminCheck(req, page) {
     if (req.cookies.userdata?.logined === undefined || !req.cookies.userdata?.logined) {
         return page.replace(parameters.languageOption[language].exitButton, parameters.languageOption[language].loginForm);
@@ -26,7 +26,7 @@ export function adminCheck(req, page) {
     }
 }
 
-// Подменяет информацию о сайте из файла settings.json
+// Replaces site information from the settings.json file
 export function replaceSiteInfo(parameters, page) {
     let donePage = page;
     let parametersList = ['language', 'name', 'name-e', 'about', 'owner', 'rules', 'logo', 'favicon']
@@ -42,36 +42,41 @@ export function replaceSiteInfo(parameters, page) {
     return donePage;
 }
 
-// Отвечет за отправку страниц кроме тех, что попадают под категорию edit
+// Responsible for sending pages other than those that fall under the edit category
 export function pages(req, res) {
-    if (fs.existsSync('pages/' + language + req.path + '.html') && !req.path.includes('/edit')) {
-        res.type('html');
-        let page = fs.readFileSync('pages/' + language + req.path + '.html', 'utf-8');
-        page = editModeCheck(req, page);
-        page = adminCheck(req, page);
-        page = replaceSiteInfo(parameters, page);
-        res.send(page);
-    } else if (req.path.includes('/edit') && !req.session.editMode) {
-        res.type('html');
-        let page = fs.readFileSync(__dirname + `/pages/${language}/errors/401.html`, 'utf-8');
-        page = editModeCheck(req, page);
-        page = adminCheck(req, page);
-        page = replaceSiteInfo(parameters, page);
-        res.send(page);
-    } else if (req.path.includes('/edit')) {
-        res.type('html');
-        editPages(req, res);
+    if (!parameters.tech.onlyAPI) {
+        if (fs.existsSync('pages/' + language + req.path + '.html') && !req.path.includes('/edit')) {
+            res.type('html');
+            let page = fs.readFileSync('pages/' + language + req.path + '.html', 'utf-8');
+            page = editModeCheck(req, page);
+            page = adminCheck(req, page);
+            page = replaceSiteInfo(parameters, page);
+            res.send(page);
+        } else if (req.path.includes('/edit') && !req.session.editMode) {
+            res.type('html');
+            let page = fs.readFileSync(__dirname + `/pages/${language}/errors/401.html`, 'utf-8');
+            page = editModeCheck(req, page);
+            page = adminCheck(req, page);
+            page = replaceSiteInfo(parameters, page);
+            res.send(page);
+        } else if (req.path.includes('/edit')) {
+            res.type('html');
+            editPages(req, res);
+        } else {
+            res.type('html');
+            let page = fs.readFileSync(__dirname + `/pages/${language}/errors/404.html`, 'utf-8');
+            page = editModeCheck(req, page);
+            page = replaceSiteInfo(parameters, page);
+            page = adminCheck(req, page);
+            res.status(404).send(page);
+        }
     } else {
-        res.type('html');
-        let page = fs.readFileSync(__dirname + `/pages/${language}/errors/404.html`, 'utf-8');
-        page = editModeCheck(req, page);
-        page = replaceSiteInfo(parameters, page);
-        page = adminCheck(req, page);
-        res.status(404).send(page);
+        res.type('json');
+        res.send({'result': 'Error: You can\'t view pages of site if onlyAPI option is enabled.'})
     }
 }
 
-// Отвечает за все страницы категории edit
+// Responsible for all pages in the edit category
 function editPages(req, res) {
     let answer;
     if (req.path == '/edit' || req.path == '/edit/') {
@@ -166,7 +171,7 @@ function editPages(req, res) {
     res.send(answer);
 }
 
-// Отвечает за получение доп. ресурсов - картинок, стилей, скриптов и т.п.
+// Responsible for obtaining additional resources - images, styles, scripts, etc.
 export function resources(req, res) {
     if (fs.existsSync('resources' + req.path)) {
         if (req.path.endsWith('.png')) {

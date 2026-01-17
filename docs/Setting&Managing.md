@@ -21,4 +21,5 @@ See the [docs/Translating.md](Translating.md) for details on adding and managing
 - `port`: (number) Port number for the server to listen on. Default is `3000`.
 - `dataPath`: (string) Path to the folder where images and documents are stored. Default is `"./pictures/"`.
 - `secureconnection`: (boolean) If `true`, the server will use HTTPS. Default is `false`.
+- `onlyAPI`: (boolean) If `true`, the server will run in API-only mode without a web interface. Default is `false`.
 - `styles`: (string) Path to a custom CSS file for styling the gallery UI.

@@ -1,4 +1,4 @@
-// Данный файл отвечает за манипуляции с базой данных
+// This file is responsible for processing data from the database.
 import Database from 'better-sqlite3';
 import fs from 'fs';
 import __dirname from './__dirname.js';
