@@ -2,7 +2,7 @@
 import Database from 'better-sqlite3';
 import fs from 'fs';
 import __dirname from './__dirname.js';
-import { language } from './app.js';
+import { language, parameters } from './app.js';
 
 var db = new Database('db.sqlite');
 
@@ -90,7 +90,7 @@ export function allData(data, dataType, resultType = 'option-list', filter = 'no
         console.log(txt);
     }
     if (txt == '') {
-        txt = 'Даних поки немає';
+        txt = parameters.languageOption[language].notFoundMsg;
     }
     return data.replace(`{{ ${dataType.toUpperCase()} MUST BE HERE }}`, txt);
 }

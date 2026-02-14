@@ -45,7 +45,7 @@ app.get([parameters.info.logo, parameters.info.favicon], (req, res) => {
     const now = new Date();
     const month = now.getMonth(); // 0 = Jan, 11 = Dec
     const day = now.getDate();
-    const isHolidaySeason = (month === 11 && day >= 5) || (month === 0 && day <= 15); // Dec 5..Dec31 OR Jan 1..Jan15
+    const isHolidaySeason = (month === 11 && day >= 5) || (month === 0 && day <= 15);
     const isFavicon = req.path.endsWith('.ico');
 
     const chosenName = isHolidaySeason
@@ -57,7 +57,6 @@ app.get([parameters.info.logo, parameters.info.favicon], (req, res) => {
     if (fs.existsSync(filePath)) {
         res.sendFile(filePath);
     } else {
-        // fallback: try to serve the normal file if the -hny one is missing (or return 404)
         const fallback = __dirname + '/resources' + (isFavicon ? parameters.info.favicon : parameters.info.logo);
         if (fs.existsSync(fallback)) {
             res.sendFile(fallback);
@@ -346,7 +345,7 @@ app.use((req, res) => {
 });
 
 app.listen(parameters.tech.port, () => {
-    console.log('Gallery v1.0.0. [DEV]');
+    console.log('Gallery v1.0.1.');
     console.log('Runned successfully!');
     console.log(`Go to the site: http://localhost:${parameters.tech.port}/`);
 });
